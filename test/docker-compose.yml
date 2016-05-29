@@ -1,0 +1,99 @@
+version: '2'
+services:
+  db:
+    container_name: portus_db
+    image: percona:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: doesnotmatter
+  portus:
+    image: eugenmayer/portus:latest
+    container_name: portus
+    environment:
+      PORTUS_DEBUG: 'true'
+      PORTUS_CREATE_CERT: 'true'
+      PORTUS_ADMIN_PASSWORD: 'adminadmin'
+      REGISTRY_SSL_ENABLED: 'true'
+      REGISTRY_HOSTNAME: registry.dev
+      REGISTRY_PORT: 443
+      REGISTRY_NAME: Registry
+      PORTUS_MACHINE_FQDN: portus.dev
+      PORTUS_PORT: 443
+      PORTUS_PRODUCTION_HOST: db
+      PORTUS_PRODUCTION_DATABASE: portus
+      PORTUS_PRODUCTION_USERNAME: root
+      PORTUS_PRODUCTION_PASSWORD: doesnotmatter
+      PORTUS_GRAVATAR_ENABLED: 'true'
+      PORTUS_DELETE_ENABLED: 'true'
+      PORTUS_KEY_PATH: /certs/privkey.pem
+      PORTUS_CRT_PATH: /certs/fullchain.pem
+      PORTUS_PASSWORD: doesnotmatter
+      PORTUS_SECRET_KEY_BASE: something
+      PORTUS_CHECK_SSL_USAGE_ENABLED: 'true'
+      PORTUS_SMTP_ENABLED: 'false'
+      PORTUS_LDAP_ENABLED: 'false'
+      PORTUS_LDAP_HOSTNAME: ""
+      PORTUS_LDAP_PORT: ""
+      PORTUS_LDAP_METHOD: ""
+      PORTUS_LDAP_BASE: ""
+      PORTUS_LDAP_UID: cn
+      PORTUS_LDAP_AUTHENTICATION_ENABLED: ""
+      PORTUS_LDAP_AUTHENTICATION_BIND_DN: ""
+      PORTUS_LDAP_AUTHENTICATION_PASSWORD: ""
+      PORTUS_LDAP_GUESS_EMAIL_ENABLED: 'true'
+      PORTUS_LDAP_GUESS_EMAIL_ATTR: mail
+    tty: true
+    stdin_open: true
+    volumes_from:
+      - certsstorage
+    depends_on:
+      - certsstorage
+      - db
+  registry:
+    image: registry:2.4.1
+    container_name: registry
+    environment:
+      REGISTRY_LOG_LEVEL: warn
+      REGISTRY_STORAGE_DELETE_ENABLED: 'true'
+      REGISTRY_AUTH: token
+      REGISTRY_AUTH_TOKEN_REALM: https://portus.dev:443/v2/token
+      REGISTRY_AUTH_TOKEN_SERVICE: registry.dev:443
+      REGISTRY_AUTH_TOKEN_ISSUER: portus.dev
+      REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/fullchain.pem
+      REGISTRY_HTTP_SECRET: somethingother
+      REGISTRY_NOTIFICATIONS_ENDPOINTS: >
+        - name: portus
+          url: http://portus:3000/v2/webhooks/events
+          timeout: 500
+          threshold: 5
+          backoff: 2s
+    tty: true
+    stdin_open: true
+    links:
+      - portus:portus
+    volumes_from:
+      - certsstorage
+    depends_on:
+      - portus
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./portus.dev.conf:/etc/nginx/conf.d/portus.dev.conf
+      - ./registry.dev.conf:/etc/nginx/conf.d/registry.dev.conf
+    volumes_from:
+      - certsstorage
+    depends_on:
+      - portus
+      - registry
+    ports:
+      - "443:443"
+  certsstorage:
+     image: cogniteev/echo
+     container_name: certstorage
+     command: echo 'certstorage'
+     volumes:
+       - certs:/certs
+     tty: true
+volumes:
+  certs:
+    driver: local

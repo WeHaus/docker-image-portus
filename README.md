@@ -1,0 +1,41 @@
+## WAT
+
+This should offer a recent build of SUSE/portus for docker use.
+It is specifically build to be configureable and also used in rancher in this [catalog](https://github.com/EugenMayer/kontextwork-catalog/tree/master/templates/registry-slim)
+
+## Changes to SUSE/ports
+
+- addind a new rake task to pre-install a registry
+- adding a startup script for docker
+
+## Test
+
+Checkout the repo, enter run
+
+```
+cd ./test 
+./start.sh
+```
+
+You need to add portus.dev and registry.dev to your /etc/hosts file and point it to your docker or docker-machine ip ( as usual )
+
+Its just a docker-compose wrapper to deal with timing during startup without "really" caring about it.
+A docker-compose file with pre-defined configuraiton values is used and when done, you can access your portus / registry by
+
+```
+https://portus.dev
+https://registry.dev
+```
+
+You can login with docker
+
+```
+docker login registry.dev
+```
+
+## Build
+
+```
+cd make
+make build
+```
