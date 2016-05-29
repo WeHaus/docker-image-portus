@@ -3,10 +3,15 @@
 This should offer a recent build of SUSE/portus for docker use.
 It is specifically build to be configureable and also used in rancher in this [catalog](https://github.com/EugenMayer/kontextwork-catalog/tree/master/templates/registry-slim)
 
+Docker images will be published on [hub.docker.io](https://hub.docker.com/r/eugenmayer/portus/)
 ## Changes to SUSE/ports
 
 - addind a new rake task to pre-install a registry
 - adding a startup script for docker
+
+## Releases
+
+For now, only planed to be published on [hub.docker.io](https://hub.docker.com/r/eugenmayer/portus/)
 
 ## Test
 
