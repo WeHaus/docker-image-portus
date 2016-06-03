@@ -15,6 +15,7 @@ RUN wget http://download.opensuse.org/repositories/home:/flavio_castelli:/phanto
 RUN apt-get update && \
     apt-get install -y --no-install-recommends phantomjs && \
     rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y vim
 
 WORKDIR /portus
 ADD portus .
