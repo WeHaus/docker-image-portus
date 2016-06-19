@@ -30,6 +30,11 @@ services:
       PORTUS_SECRET_KEY_BASE: something
       PORTUS_CHECK_SSL_USAGE_ENABLED: 'true'
       PORTUS_SMTP_ENABLED: 'false'
+      PORTUS_SMTP_ADDRESS: 'smtp.example.com'
+      PORTUS_SMTP_PORT: 587
+      PORTUS_SMTP_USER_NAME: 'username@example.com'
+      PORTUS_SMTP_PASSWORD: 'password'
+      PORTUS_SMTP_DOMAIN: 'example.com'
       PORTUS_LDAP_ENABLED: 'false'
       PORTUS_LDAP_HOSTNAME: ""
       PORTUS_LDAP_PORT: ""
@@ -63,9 +68,10 @@ services:
       REGISTRY_NOTIFICATIONS_ENDPOINTS: >
         - name: portus
           url: http://portus:3000/v2/webhooks/events
-          timeout: 500
+          timeout: 500ms
           threshold: 5
-          backoff: 2s
+          backoff: 1s
+
     tty: true
     stdin_open: true
     links:

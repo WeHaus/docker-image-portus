@@ -15,18 +15,18 @@ RUN wget http://download.opensuse.org/repositories/home:/flavio_castelli:/phanto
 RUN apt-get update && \
     apt-get install -y --no-install-recommends phantomjs && \
     rm -rf /var/lib/apt/lists/*
-RUN apt-get install -y vim
+RUN apt-get update && apt-get install -y vim telnet
 
 WORKDIR /portus
 ADD portus .
 
 # based on https://github.com/sshipway/Portus/blob/master/Dockerfile
-RUN apt-get update && apt-get install -y telnet ldap-utils
+RUN apt-get update && apt-get install -y ldap-utils
 RUN bundle install --retry=3
 
 ADD build/registry.rake ./lib/tasks/registry.rake
 ADD build/startup.sh ./startup.sh
-RUN chmod +x ./startup.sh && rm -fr .git
+RUN chmod +x ./startup.sh && rm -fr .git && mkdir /portus/log
 
 # Run this command to start it up
 ENTRYPOINT ["/bin/bash","/portus/startup.sh"]
