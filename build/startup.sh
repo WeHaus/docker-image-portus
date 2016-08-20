@@ -19,7 +19,7 @@ fi
 
 cd /portus
 
-if [ "$PORTUS_KEY_PATH" != "" -a "$PORTUS_MACHINE_FQDN" != "" -a "$PORTUS_CREATE_CERT" != "" ];then
+if [ "$PORTUS_MACHINE_FQDN" != "" -a "$PORTUS_CREATE_CERT" != "" ];then
     # create self-signed certificates
     echo Creating Certificate
     export ALTNAME=`hostname`
@@ -43,8 +43,8 @@ done
 echo "Creating / Migrating Database"
 rake db:create && rake db:migrate && rake db:seed
 
-echo "Creating API account if required"
-rake portus:create_api_account
+#echo "Creating API account if required"
+#rake portus:create_api_account
 
 if [ "$PORTUS_ADMIN_PASSWORD" != "" ]; then
 	echo Creating admin user

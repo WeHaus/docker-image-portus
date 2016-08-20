@@ -10,8 +10,8 @@ services:
     container_name: portus
     environment:
       PORTUS_DEBUG: 'true'
-      PORTUS_CREATE_CERT: 'true'
-      PORTUS_ADMIN_PASSWORD: 'adminadmin'
+      #PORTUS_CREATE_CERT: 'false'
+      PORTUS_ADMIN_PASSWORD: 'adminadminadmin'
       REGISTRY_SSL_ENABLED: 'true'
       REGISTRY_HOSTNAME: registry.dev
       REGISTRY_PORT: 443
@@ -48,15 +48,15 @@ services:
       PORTUS_LDAP_GUESS_EMAIL_ATTR: mail
     tty: true
     stdin_open: true
-    volumes_from:
-      - certsstorage
+    volumes:
+      - ./certs:/certs
     depends_on:
-      - certsstorage
       - db
   registry:
-    image: registry:2.4.1
+    image: registry:2.5.0
     container_name: registry
     environment:
+      # we can use environment variables to configure registry, see https://github.com/docker/distribution/blob/master/configuration/configuration.go#L13
       REGISTRY_LOG_LEVEL: warn
       REGISTRY_STORAGE_DELETE_ENABLED: 'true'
       REGISTRY_AUTH: token
@@ -74,10 +74,8 @@ services:
 
     tty: true
     stdin_open: true
-    links:
-      - portus:portus
-    volumes_from:
-      - certsstorage
+    volumes:
+      - ./certs:/certs
     depends_on:
       - portus
   nginx:
@@ -86,20 +84,9 @@ services:
     volumes:
       - ./portus.dev.conf:/etc/nginx/conf.d/portus.dev.conf
       - ./registry.dev.conf:/etc/nginx/conf.d/registry.dev.conf
-    volumes_from:
-      - certsstorage
+      - ./certs:/certs
     depends_on:
       - portus
       - registry
     ports:
       - "443:443"
-  certsstorage:
-     image: cogniteev/echo
-     container_name: certstorage
-     command: echo 'certstorage'
-     volumes:
-       - certs:/certs
-     tty: true
-volumes:
-  certs:
-    driver: local

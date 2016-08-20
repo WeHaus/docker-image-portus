@@ -8,6 +8,11 @@ This image is specifically designed to be configureable and also used in a ranch
 
 Docker images will be published on [hub.docker.io](https://hub.docker.com/r/eugenmayer/portus/)
 
+## Configuration
+### registry
+
+The registry is configured using ENV variables, even if not officially documented ( only config.yml is documents ) it is supported, see  we can use environment variables to configure registry, see https://github.com/docker/distribution/blob/master/configuration/configuration.go#L13
+
 ## Changes to SUSE/ports
 
 - addind a new rake task to pre-install a registry
