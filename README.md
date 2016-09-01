@@ -1,12 +1,10 @@
 ## WAT
 
-This should offer a recent build of SUSE/portus for docker use. Source will not be modified or hackedand is cloned directly from [SUSE/portus](https://github.com/SUSE/Portus) during the build, so releases never getting delayed due to merge issues.
+This should offer a recent build of SUSE/portus for docker use. Source will not be modified or hacked and is cloned directly from [SUSE/portus](https://github.com/SUSE/Portus) during the build, so releases never getting delayed due to merge issues.
 
-This motivation was the reason to fork from [sshipway/Portus](https://github.com/sshipway/Portus) great work - due to the 'hacks' he made, the builds are outdated, but also important features are missing.
+This image is specifically designed to be configurable and also used in a rancher catalog like this one [catalog](https://github.com/EugenMayer/kontextwork-catalog/tree/master/templates/registry-slim)
 
-This image is specifically designed to be configureable and also used in a rancher catalog like this one [catalog](https://github.com/EugenMayer/kontextwork-catalog/tree/master/templates/registry-slim)
-
-Docker images will be published on [hub.docker.io](https://hub.docker.com/r/eugenmayer/portus/)
+Docker images are published to [hub.docker.io](https://hub.docker.com/r/eugenmayer/portus/)
 
 ## Configuration
 ### registry
@@ -15,7 +13,7 @@ The registry is configured using ENV variables, even if not officially documente
 
 ## Changes to SUSE/ports
 
-- addind a new rake task to pre-install a registry
+- addind a new rake task to pre-install a registry, should be removed when https://github.com/SUSE/Portus/issues/1036 is finished
 - adding a startup script for docker
 
 ## Releases
