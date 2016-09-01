@@ -1,6 +1,6 @@
 # based on https://github.com/sshipway/Portus/blob/master/lib/tasks/sshipway.rake
 namespace :registry do
-  desc "Register a registry"
+  desc 'Register a registry'
   task :register, [:registryname, :hostport, :withssl] => :environment do |_, args|
     args.each do |k, v|
       if v.empty?
@@ -10,14 +10,14 @@ namespace :registry do
     end
 
     @registry = Registry.new(
-        name:     args["registryname"],
-        hostname: args["hostport"],
-        use_ssl:  args["withssl"]
+        name:     args['registryname'],
+        hostname: args['hostport'],
+        use_ssl:  args['withssl']
     )
 
     if @registry.save
       Namespace.update_all(registry_id: @registry.id)
-      puts "Registry was successfully created."
+      puts 'Registry was successfully created.'
     else
       puts @registry.errors.full_messages
       exit(-1)

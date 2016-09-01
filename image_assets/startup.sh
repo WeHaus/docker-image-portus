@@ -34,30 +34,44 @@ if [ "$PORTUS_MACHINE_FQDN" != "" ];then
 fi
 
 RET=1
-echo "Waiting for database"
+echo "Waiting for database."
 while [[ RET -ne 0 ]]; do
     sleep 1;
+    printf '.'
     mysql -h db -u root -p$PORTUS_PASSWORD -e "select 1" > /dev/null 2>&1; RET=$?
 done
 
 echo "Creating / Migrating Database"
 rake db:create && rake db:migrate && rake db:seed
 
-#echo "Creating API account if required"
-#rake portus:create_api_account
+# create the registry first, before creating any users
 
-if [ "$PORTUS_ADMIN_PASSWORD" != "" ]; then
-	echo Creating admin user
-	rake "portus:create_user[admin,admin@local.dev,$PORTUS_ADMIN_PASSWORD,true]"
-fi
 
 if [ "$REGISTRY_HOSTNAME" != "" -a "$REGISTRY_PORT" != "" -a "$REGISTRY_SSL_ENABLED" != "" ]; then
-	echo Checking registry definition for $REGISTRY_HOSTNAME:$REGISTRY_PORT
+	echo 'Waiting for registry to be available.'
+	until $(curl --insecure --output /dev/null --silent --head --fail https://$REGISTRY_HOSTNAME:$REGISTRY_PORT); do
+		printf '.'
+		sleep 1
+	done
+
+	echo "Checking registry definition for $REGISTRY_HOSTNAME:$REGISTRY_PORT"
 	rake registry:register"[Registry,$REGISTRY_HOSTNAME:$REGISTRY_PORT,$REGISTRY_SSL_ENABLED]"
 fi
 
-echo Starting chrono
+# TODO: somehow not needed anymore or at least fails with 'dublicate user'
+# create an API account
+#echo "Creating API account if required"
+#rake portus:create_api_account
+
+# create a portus admin user if asked to do so
+if [ "$PORTUS_ADMIN_PASSWORD" != "" ]; then
+	echo "Creating admin user"
+	rake "portus:create_user[admin,admin@local.de,$PORTUS_ADMIN_PASSWORD,true]"
+fi
+
+
+echo "Starting chrono"
 bundle exec crono &
 
-echo Starting Portus
+echo "Starting Portus"
 /usr/bin/env /usr/local/bin/ruby /usr/local/bundle/bin/puma $*

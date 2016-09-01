@@ -4,10 +4,12 @@ services:
     container_name: portus_db
     image: percona:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: doesnotmatter
+      MYSQL_ROOT_PASSWORD: "doesnotmatter"
   portus:
     image: eugenmayer/portus:latest
     container_name: portus
+    build:
+      context: .
     environment:
       PORTUS_DEBUG: 'true'
       #PORTUS_CREATE_CERT: 'false'
@@ -21,12 +23,12 @@ services:
       PORTUS_PRODUCTION_HOST: db
       PORTUS_PRODUCTION_DATABASE: portus
       PORTUS_PRODUCTION_USERNAME: root
-      PORTUS_PRODUCTION_PASSWORD: doesnotmatter
+      PORTUS_PRODUCTION_PASSWORD: "doesnotmatter"
       PORTUS_GRAVATAR_ENABLED: 'true'
       PORTUS_DELETE_ENABLED: 'true'
       PORTUS_KEY_PATH: /certs/privkey.pem
       PORTUS_CRT_PATH: /certs/fullchain.pem
-      PORTUS_PASSWORD: doesnotmatter
+      PORTUS_PASSWORD: "doesnotmatter"
       PORTUS_SECRET_KEY_BASE: something
       PORTUS_CHECK_SSL_USAGE_ENABLED: 'true'
       PORTUS_SMTP_ENABLED: 'false'
@@ -46,12 +48,16 @@ services:
       PORTUS_LDAP_AUTHENTICATION_PASSWORD: ""
       PORTUS_LDAP_GUESS_EMAIL_ENABLED: 'true'
       PORTUS_LDAP_GUESS_EMAIL_ATTR: mail
+      PORTUS_REGISTRY_JWT_EXIRATION_TIME: 5
     tty: true
     stdin_open: true
     volumes:
-      - ./certs:/certs
+      - ./test/certs:/certs
     depends_on:
       - db
+      - registry
+    external_links:
+      - "nginx:registry.dev"
   registry:
     image: registry:2.5.0
     container_name: registry
@@ -75,18 +81,21 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - ./certs:/certs
-    depends_on:
-      - portus
+      - ./test/certs:/certs
+    external_links:
+      - "nginx:portus.dev"
   nginx:
     image: nginx:latest
     container_name: nginx
     volumes:
-      - ./portus.dev.conf:/etc/nginx/conf.d/portus.dev.conf
-      - ./registry.dev.conf:/etc/nginx/conf.d/registry.dev.conf
-      - ./certs:/certs
+      - ./test/portus.dev.conf:/etc/nginx/conf.d/portus.dev.conf
+      - ./test/registry.dev.conf:/etc/nginx/conf.d/registry.dev.conf
+      - ./test/certs:/certs
     depends_on:
       - portus
       - registry
     ports:
       - "443:443"
+    external_links:
+      - "portus:portus.dev"
+      - "registry:registry.dev"
