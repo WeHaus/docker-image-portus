@@ -6,7 +6,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "doesnotmatter"
   portus:
-    image: eugenmayer/portus:latest
+    image: eugenmayer/portus:2.4-rc8
     container_name: portus
     build:
       context: .
@@ -24,6 +24,10 @@ services:
       PORTUS_PRODUCTION_DATABASE: portus
       PORTUS_PRODUCTION_USERNAME: root
       PORTUS_PRODUCTION_PASSWORD: "doesnotmatter"
+      PORTUS_DEVELOPMENT_HOST: db
+      PORTUS_DEVELOPMENT_DATABASE: portus
+      PORTUS_DEVELOPMENT_USERNAME: root
+      PORTUS_DEVELOPMENT_PASSWORD: "doesnotmatter"
       PORTUS_GRAVATAR_ENABLED: 'true'
       PORTUS_DELETE_ENABLED: 'true'
       PORTUS_KEY_PATH: /certs/privkey.pem
@@ -48,9 +52,8 @@ services:
       PORTUS_LDAP_AUTHENTICATION_PASSWORD: ""
       PORTUS_LDAP_GUESS_EMAIL_ENABLED: 'true'
       PORTUS_LDAP_GUESS_EMAIL_ATTR: mail
-      PORTUS_REGISTRY_JWT_EXIRATION_TIME: 5
-    tty: true
-    stdin_open: true
+      PORTUS_REGISTRY_JWT_EXIRATION_TIME: 30
+      RAILS_ENV: 'development'
     volumes:
       - ./test/certs:/certs
     depends_on:
@@ -74,12 +77,10 @@ services:
       REGISTRY_NOTIFICATIONS_ENDPOINTS: >
         - name: portus
           url: http://portus:3000/v2/webhooks/events
-          timeout: 500ms
-          threshold: 5
-          backoff: 1s
+          timeout: 5000
+          threshold: 2
+          backoff: 20s
 
-    tty: true
-    stdin_open: true
     volumes:
       - ./test/certs:/certs
     external_links:

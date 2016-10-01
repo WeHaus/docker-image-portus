@@ -1,0 +1,74 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+<% if ENV['COMPOSE'] %>
+  host: <%= ENV['PORTUS_DB_HOST'] %>
+  username: root
+  password: portus
+<% end %>
+
+development:
+  <<: *default
+  database: portus_development
+  <% if ENV["PORTUS_DEVELOPMENT_HOST"] %>
+  host:     <%= ENV["PORTUS_DEVELOPMENT_HOST"] %>
+  <% end %>
+  <% if ENV["PORTUS_DEVELOPMENT_USERNAME"] %>
+  username: <%= ENV["PORTUS_DEVELOPMENT_USERNAME"] %>
+  <% end %>
+  <% if ENV["PORTUS_DEVELOPMENT_PASSWORD"] %>
+  password: <%= ENV["PORTUS_DEVELOPMENT_PASSWORD"] %>
+  <% end %>
+  <% if ENV["PORTUS_DEVELOPMENT_DATABASE"] %>
+  database: <%= ENV["PORTUS_DEVELOPMENT_DATABASE"] %>
+  <% end %>
+
+staging:
+  <<: *default
+  database: portus_staging
+  <% if ENV["PORTUS_STAGING_HOST"] %>
+  host:     <%= ENV["PORTUS_STAGING_HOST"] %>
+  <% end %>
+  <% if ENV["PORTUS_STAGING_USERNAME"] %>
+  username: <%= ENV["PORTUS_STAGING_USERNAME"] %>
+  <% end %>
+  <% if ENV["PORTUS_STAGING_PASSWORD"] %>
+  password: <%= ENV["PORTUS_STAGING_PASSWORD"] %>
+  <% end %>
+  <% if ENV["PORTUS_STAGING_DATABASE"] %>
+  database: <%= ENV["PORTUS_STAGING_DATABASE"] %>
+  <% end %>
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: portus_test
+  <% if ENV["PORTUS_TEST_HOST"] %>
+  host:     <%= ENV["PORTUS_TEST_HOST"] %>
+  <% end %>
+  <% if ENV["PORTUS_TEST_USERNAME"] %>
+  username: <%= ENV["PORTUS_TEST_USERNAME"] %>
+  <% end %>
+  <% if ENV["PORTUS_TEST_PASSWORD"] %>
+  password: <%= ENV["PORTUS_TEST_PASSWORD"] %>
+  <% end %>
+  <% if ENV["PORTUS_TEST_DATABASE"] %>
+  database: <%= ENV["PORTUS_TEST_DATABASE"] %>
+  <% end %>
+
+production:
+  <<: *default
+  <% if ENV["PORTUS_PRODUCTION_HOST"] %>
+  host:     <%= ENV["PORTUS_PRODUCTION_HOST"] %>
+  <% end %>
+  <% if ENV["PORTUS_PRODUCTION_USERNAME"] %>
+  username: <%= ENV["PORTUS_PRODUCTION_USERNAME"] %>
+  <% end %>
+  <% if ENV["PORTUS_PRODUCTION_PASSWORD"] %>
+  password: <%= ENV["PORTUS_PRODUCTION_PASSWORD"] %>
+  <% end %>
+  <% if ENV["PORTUS_PRODUCTION_DATABASE"] %>
+  database: <%= ENV["PORTUS_PRODUCTION_DATABASE"] %>
+  <% end %>

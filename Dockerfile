@@ -26,8 +26,9 @@ WORKDIR /portus
 # based on https://github.com/sshipway/Portus/blob/master/Dockerfile
 RUN bundle install --retry=3
 
-COPY image_assets/registry.rake ./lib/tasks/registry.rake
-COPY image_assets/startup.sh /usr/local/bin/startup
+COPY patches/registry.rake ./lib/tasks/registry.rake
+COPY patches/database.yml ./conf/database.yml
+COPY patches/startup.sh /usr/local/bin/startup
 RUN chmod +x /usr/local/bin/startup && rm -fr .git && mkdir /portus/log
 
 # Run this command to start it up
