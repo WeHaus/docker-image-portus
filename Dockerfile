@@ -27,7 +27,7 @@ WORKDIR /portus
 RUN bundle install --retry=3
 
 COPY patches/registry.rake ./lib/tasks/registry.rake
-COPY patches/database.yml ./conf/database.yml
+COPY patches/database.yml ./config/database.yml
 COPY patches/startup.sh /usr/local/bin/startup
 RUN chmod +x /usr/local/bin/startup && rm -fr .git && mkdir /portus/log
 
