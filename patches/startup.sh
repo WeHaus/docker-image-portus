@@ -38,7 +38,7 @@ echo "Waiting for database."
 while [[ RET -ne 0 ]]; do
     sleep 1;
     printf '.'
-    mysql -h db -u root -p$PORTUS_PASSWORD -e "select 1" > /dev/null 2>&1; RET=$?
+    mysql -h $PORTUS_PRODUCTION_HOST -u $PORTUS_PRODUCTION_USERNAME -p$PORTUS_PRODUCTION_PASSWORD -e "select 1" > /dev/null 2>&1; RET=$?
 done
 
 echo "Creating / Migrating Database"
