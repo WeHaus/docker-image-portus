@@ -8,7 +8,7 @@ RUN git clone https://github.com/SUSE/Portus.git portus \
  && cd portus \
  && bundle install --retry=3 && bundle binstubs phantomjs \
  && apt-get update \
- && apt-get install -y --no-install-recommends nodejs ldap-utils curl \
+ && apt-get install -y --no-install-recommends nodejs ldap-utils curl mysql-client \
  && rm -fr .git
 
 WORKDIR /portus
@@ -16,7 +16,7 @@ WORKDIR /portus
 COPY patches/registry.rake ./lib/tasks/registry.rake
 COPY patches/database.yml ./config/database.yml
 COPY patches/startup.sh /usr/local/bin/startup
-RUN chmod +x /usr/local/bin/startup && rm -fr .git && mkdir /portus/log
+RUN chmod +x /usr/local/bin/startup && mkdir /portus/log
 
 # Run this command to start it up
 ENTRYPOINT ["/bin/bash","/usr/local/bin/startup"]

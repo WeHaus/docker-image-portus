@@ -13,7 +13,7 @@ The registry is configured using ENV variables, even if not officially documente
 
 ## Changes to SUSE/ports
 
-- addind a new rake task to pre-install a registry, should be removed when https://github.com/SUSE/Portus/issues/1036 is finished
+- adding a new rake task to pre-install a registry, should be removed when https://github.com/SUSE/Portus/issues/1036 is finished
 - adding a startup script for docker
 
 ## Releases
@@ -32,7 +32,7 @@ cd ./test
 You need to add portus.dev and registry.dev to your /etc/hosts file and point it to your docker or docker-machine ip ( as usual )
 
 Its just a docker-compose wrapper to deal with timing during startup without "really" caring about it.
-A docker-compose file with pre-defined configuraiton values is used and when done, you can access your portus / registry by
+A docker-compose file with pre-defined configuration values is used and when done, you can access your portus / registry by
 
 ```
 https://portus.dev
