@@ -77,7 +77,7 @@ services:
       REGISTRY_NOTIFICATIONS_ENDPOINTS: >
         - name: portus
           url: http://portus:3000/v2/webhooks/events
-          timeout: 5000
+          timeout: 5000ms
           threshold: 2
           backoff: 20s
 
