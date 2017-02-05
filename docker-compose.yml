@@ -69,8 +69,8 @@ services:
       REGISTRY_LOG_LEVEL: warn
       REGISTRY_STORAGE_DELETE_ENABLED: 'true'
       REGISTRY_AUTH: token
-      REGISTRY_AUTH_TOKEN_REALM: https://portus.dev:443/v2/token
-      REGISTRY_AUTH_TOKEN_SERVICE: registry.dev:443
+      REGISTRY_AUTH_TOKEN_REALM: https://portus.dev/v2/token
+      REGISTRY_AUTH_TOKEN_SERVICE: registry.dev
       REGISTRY_AUTH_TOKEN_ISSUER: portus.dev
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/fullchain.pem
       REGISTRY_HTTP_SECRET: somethingother
