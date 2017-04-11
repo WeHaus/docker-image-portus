@@ -35,12 +35,12 @@ services:
       PORTUS_PASSWORD: "doesnotmatter"
       PORTUS_SECRET_KEY_BASE: something
       PORTUS_CHECK_SSL_USAGE_ENABLED: 'true'
-      PORTUS_SMTP_ENABLED: 'false'
-      PORTUS_SMTP_ADDRESS: 'smtp.example.com'
-      PORTUS_SMTP_PORT: 587
-      PORTUS_SMTP_USER_NAME: 'username@example.com'
-      PORTUS_SMTP_PASSWORD: 'password'
-      PORTUS_SMTP_DOMAIN: 'example.com'
+      PORTUS_EMAIL_SMTP_ENABLED: 'false'
+      PORTUS_EMAIL_SMTP_ADDRESS: 'smtp.example.com'
+      PORTUS_EMAIL_SMTP_PORT: 587
+      PORTUS_EMAIL_SMTP_USER_NAME: 'username@example.com'
+      PORTUS_EMAIL_SMTP_PASSWORD: 'password'
+      PORTUS_EMAIL_SMTP_DOMAIN: 'example.com'
       PORTUS_LDAP_ENABLED: 'false'
       PORTUS_LDAP_HOSTNAME: ""
       PORTUS_LDAP_PORT: ""
@@ -52,7 +52,7 @@ services:
       PORTUS_LDAP_AUTHENTICATION_PASSWORD: ""
       PORTUS_LDAP_GUESS_EMAIL_ENABLED: 'true'
       PORTUS_LDAP_GUESS_EMAIL_ATTR: mail
-      PORTUS_REGISTRY_JWT_EXIRATION_TIME: 30
+      PORTUS_REGISTRY_JWT_EXPIRATION_TIME: 30
       RAILS_ENV: 'development'
     volumes:
       - ./test/certs:/certs
