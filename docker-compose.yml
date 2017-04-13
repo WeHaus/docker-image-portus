@@ -52,7 +52,7 @@ services:
       PORTUS_LDAP_AUTHENTICATION_PASSWORD: ""
       PORTUS_LDAP_GUESS_EMAIL_ENABLED: 'true'
       PORTUS_LDAP_GUESS_EMAIL_ATTR: mail
-      PORTUS_REGISTRY_JWT_EXPIRATION_TIME: 30
+      PORTUS_REGISTRY_JWT_EXPIRATION_TIME_VALUE: 30
       RAILS_ENV: 'development'
     volumes:
       - ./test/certs:/certs
