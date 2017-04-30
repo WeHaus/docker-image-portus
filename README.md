@@ -6,6 +6,10 @@ This image is specifically designed to be configurable and also used in a ranche
 
 Docker images are published to [hub.docker.io](https://hub.docker.com/r/eugenmayer/portus/)
 
+## Credits
+
+Currently [zaggash](https://github.com/zaggash) is the main maintainer, so please give him the credits. Thanks for taking this image to the next level!
+
 ## Configuration
 ### registry
 
