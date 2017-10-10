@@ -6,7 +6,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "doesnotmatter"
   portus:
-    image: eugenmayer/portus:2.4-rc8
+    image: eugenmayer/portus:2.2.0
     container_name: portus
     build:
       context: .
@@ -62,7 +62,7 @@ services:
     external_links:
       - "nginx:registry.dev"
   registry:
-    image: registry:2.5.0
+    image: registry:2.6.2
     container_name: registry
     environment:
       # we can use environment variables to configure registry, see https://github.com/docker/distribution/blob/master/configuration/configuration.go#L13
