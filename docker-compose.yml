@@ -4,7 +4,7 @@ services:
     container_name: portus_db
     image: percona:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: "doesnotmatter"
+      MYSQL_ROOT_PASSWORD: "Wehausito$"
   portus:
     image: eugenmayer/portus:2.2.0
     container_name: portus
@@ -23,16 +23,16 @@ services:
       PORTUS_PRODUCTION_HOST: db
       PORTUS_PRODUCTION_DATABASE: portus
       PORTUS_PRODUCTION_USERNAME: root
-      PORTUS_PRODUCTION_PASSWORD: "doesnotmatter"
+      PORTUS_PRODUCTION_PASSWORD: "Wehausito$"
       PORTUS_DEVELOPMENT_HOST: db
       PORTUS_DEVELOPMENT_DATABASE: portus
       PORTUS_DEVELOPMENT_USERNAME: root
-      PORTUS_DEVELOPMENT_PASSWORD: "doesnotmatter"
+      PORTUS_DEVELOPMENT_PASSWORD: "Wehausito$"
       PORTUS_GRAVATAR_ENABLED: 'true'
       PORTUS_DELETE_ENABLED: 'true'
       PORTUS_KEY_PATH: /certs/privkey.pem
       PORTUS_CRT_PATH: /certs/fullchain.pem
-      PORTUS_PASSWORD: "doesnotmatter"
+      PORTUS_PASSWORD: "Wehausito$"
       PORTUS_SECRET_KEY_BASE: something
       PORTUS_CHECK_SSL_USAGE_ENABLED: 'true'
       PORTUS_EMAIL_SMTP_ENABLED: 'false'
@@ -91,7 +91,7 @@ services:
     volumes:
       - ./test/portus.dev.conf:/etc/nginx/conf.d/portus.dev.conf
       - ./test/registry.dev.conf:/etc/nginx/conf.d/registry.dev.conf
-      - ./test/certs:/certs
+      - /etc/letsencrypt/live/registry.wehaus.com/:/certs
     depends_on:
       - portus
       - registry
